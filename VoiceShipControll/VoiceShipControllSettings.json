@@ -1,0 +1,15 @@
+{
+  "language-code": "en-US",
+  "terminal-voice-commands": {
+    "start terminal": "i'm on terminal terminal"
+  },
+  "jarvice-voice-commands": {
+    "hi jarvis": "hi jarvis",
+    "bye jarvis": "bye jarvis",
+    "start terminal": "i'm on terminal terminal"
+  },
+  "jarvice-voice-assets": {
+    "hi jarvis": "jarvis-welcome",
+    "bye jarvis": "jarvis-bye | jarvis-welcome"
+  }
+}
