@@ -11,8 +11,6 @@ namespace VoiceShipControll.Helpers
 {
     internal class ShipCommands
     {
-        private static bool usedTerminalThisSession = false;
-        private static bool syncedTerminalValues = false;
         public static Dictionary<string, int> items = new Dictionary<string, int>
                     {
                         { "Walkie-Talkie", 0 },

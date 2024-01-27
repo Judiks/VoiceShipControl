@@ -1,7 +1,9 @@
 ﻿using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
+using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using VoiceShipControll.Helpers;
@@ -61,6 +63,22 @@ namespace VoiceShipControll
             }
             
             harmony.PatchAll(typeof(StartOfRoundPatch));
+            ParseVoiceShipControllSettings();
+        }
+
+
+        public  void ParseVoiceShipControllSettings()
+        {
+            _logger.LogInfo("Parse VoiceShipControll Settings");
+            JObject json = JObject.Parse(File.ReadAllText($"{PlaginConstants.PathToFolder}\\VoiceShipControllSettings.json"));
+            PlaginConstants.JarviceVoiceCommands = JObject.FromObject(json["jarvice-voice-commands"]).ToObject<Dictionary<string, string>>();
+            _logger.LogInfo("Parsed JarviceVoiceCommands Count: " + PlaginConstants.JarviceVoiceCommands.Count);
+            PlaginConstants.TerminalVoiceCommands = JObject.FromObject(json["terminal-voice-commands"]).ToObject<Dictionary<string, string>>();
+            _logger.LogInfo("Parsed TerminalVoiceCommands Count: " + PlaginConstants.TerminalVoiceCommands.Count);
+            PlaginConstants.JarvisVoiceAssets = JObject.FromObject(json["jarvice-voice-assets"]).ToObject<Dictionary<string, string>>();
+            _logger.LogInfo("Parsed JarvisVoiceAssets Count: " + PlaginConstants.JarvisVoiceAssets.Count);
+            PlaginConstants.LanguageCode = json.Value<string>("language-code");
+            _logger.LogInfo("Parsed LanguageCode: " + PlaginConstants.LanguageCode);
         }
 
         private  Assembly OnResolveAssembly(object sender, ResolveEventArgs args)

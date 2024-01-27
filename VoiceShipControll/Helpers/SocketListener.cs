@@ -2,10 +2,13 @@
 using System.Net.Sockets;
 using System.Text;
 using UnityEngine;
-using System.Threading;
-using System.IO;
 using System;
-using System.Runtime.InteropServices;
+using System.Collections;
+using UnityEngine.SceneManagement;
+using VoiceShipControll.Helpers;
+using System.Threading.Tasks;
+using System.Threading;
+using static UnityEngine.GraphicsBuffer;
 
 // Get Host IP Address that is used to establish a connection
 // In this case, we get one IP address of localhost that is IP : 127.0.0.1
@@ -14,14 +17,45 @@ public delegate void MessageReceivedEvent(string message, EventArgs e);
 public delegate void ErrorReceivedEvent(string error, EventArgs e);
 public class SocketListener : MonoBehaviour
 {
-    Socket _socket;
-    Socket _handler;
-    Thread _thread;
-    public int connectionPort = 5050;
-    public event MessageReceivedEvent OnMessageReceivedEvent;
-    public event ErrorReceivedEvent OnErrorReceivedEvent;
-    public bool serverStarted = false;
-    public void StartServer()
+    public static SocketListener Instance;
+    private static Socket _socket;
+    private static Socket _handler;
+    private static IPEndPoint remoteEndPoint;
+    public static int connectionPort = 5050;
+    public static event MessageReceivedEvent OnMessageReceivedEvent;
+    public static event ErrorReceivedEvent OnErrorReceivedEvent;
+    public static bool isServerStarted = false;
+    public static bool isWaitingMessage = false;
+    public static bool isConnectionStarted = false;
+    public static TaskScheduler mainThreadContext;
+
+    public static void InitSocketListener(bool visible = false, string name = "SocketListener")
+    {
+        if (Instance != null)
+        {
+            return;
+        }
+
+        if (Application.isPlaying)
+        {
+            // add an invisible game object to the scene
+            GameObject obj = new GameObject();
+            if (!visible)
+            {
+                obj.hideFlags = HideFlags.HideAndDontSave;
+            }
+
+            DontDestroyOnLoad(obj);
+            Instance = obj.AddComponent<SocketListener>();
+            InitServer();
+
+            Debug.Log("SocketListener object created");
+            Instantiate(Instance.gameObject, new Vector3(1, 1, 0), Quaternion.identity);
+        }
+        mainThreadContext = TaskScheduler.FromCurrentSynchronizationContext();
+    }
+
+    public static void InitServer()
     {
         IPAddress ipAddress = IPAddress.Parse("127.0.0.1");
         IPEndPoint localEndPoint = new IPEndPoint(ipAddress, connectionPort);
@@ -30,63 +64,85 @@ public class SocketListener : MonoBehaviour
         Console.WriteLine($"Server listening on {localEndPoint}");
         _socket.Listen(10);
         Console.WriteLine("Waiting for a connection...");
-        while (!serverStarted)
+    }
+
+    public void Update() {
+        if (!isServerStarted)
         {
-            try
+            if (!isConnectionStarted)
             {
-                Console.WriteLine("Trying to connect");
-                _handler = _socket.Accept();
-                Thread.Sleep(500);
-                if ( _handler != null )
-                {
-                    serverStarted = true;
-                }
-            } catch (Exception e) { Console.WriteLine(e.ToString()); }
+                isConnectionStarted = true;
+                Console.WriteLine("Connecting...");
+                Instance.StartCoroutine(Connect());
+            }
+        } else
+        {
+            if (!isWaitingMessage && Recognizer.IsProcessStarted)
+            {
+                Console.WriteLine("Broadcasting started");
+                Instance.StartCoroutine(Broadcasting());
+            }
         }
     }
 
-    public void StartBroadcasting()
+
+    public static IEnumerator Connect()
     {
-        if (_handler == null)
-        {
-            Debug.Log("Socket server not started StartBroadcasting failed");
-            return;
-        }
+        yield return new WaitForSeconds(0.5f);
         try
         {
-            Console.WriteLine("Socket listener started");
-            IPEndPoint remoteEndPoint = (IPEndPoint)_handler.RemoteEndPoint;
-            Console.WriteLine($"Accepted connection from {remoteEndPoint}");
+            Console.WriteLine("Trying to connect");
+            _handler = _socket.Accept();
 
-            byte[] buffer = new byte[1024];
-            int bytesReceived;
-
-            do
+            if (_handler != null)
             {
-                SendData("continue");
-                bytesReceived = _handler.Receive(buffer);
+                isServerStarted = true;
+                Console.WriteLine("Socket listener started");
+                remoteEndPoint = (IPEndPoint)_handler.RemoteEndPoint;
+                Console.WriteLine($"Accepted connection from {remoteEndPoint}");
+            }
+        }
+        catch (Exception e) { Console.WriteLine(e.ToString()); }
+    }
+
+    public static IEnumerator Broadcasting()
+    {
+        isWaitingMessage = true;
+        yield return new WaitForSeconds(1f);
+        SendData("continue");
+        Thread newThread = new Thread(OnReceiveData);
+        newThread.Start();
+
+    }
+
+    static void OnReceiveData()
+    {
+        Task.Run(() =>
+        {
+            byte[] buffer = new byte[1024];
+            var bytesReceived = _handler.Receive(buffer);
+
+            // Process the result back on the main thread
+            Task.Factory.StartNew(() =>
+            {
                 if (bytesReceived > 0)
                 {
                     var data = Encoding.ASCII.GetString(buffer, 0, bytesReceived);
                     if (data.Contains("Error"))
                     {
-                        ErrorRecivedEventTrigger(data);
+                        Instance.ErrorRecivedEventTrigger(data);
                     }
                     else
                     {
-                        MessageRecivedEventTrigger(data);
+                        Instance.MessageRecivedEventTrigger(data);
                     }
                 }
-                Thread.Sleep(300);
-            } while (bytesReceived > 0);
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e.ToString());
-        }
+                isWaitingMessage = false;
+            }, CancellationToken.None, TaskCreationOptions.None, mainThreadContext);
+        });
     }
 
-    public void SendData(string data)
+    public static void SendData(string data)
     {
         if (_handler == null)
         {

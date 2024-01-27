@@ -1,24 +1,13 @@
-﻿using Dissonance;
-using HarmonyLib;
-using Newtonsoft.Json;
+﻿using HarmonyLib;
 using System;
-using System.Globalization;
 using System.IO;
 using System.Speech.Recognition;
-using System.Threading;
 using UnityEngine;
-using Microsoft.Win32;
-using System.Diagnostics;
 using Debug = UnityEngine.Debug;
 using VoiceShipControll.Helpers;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using System.Linq;
-using Object = UnityEngine.Object;
-using UnityEngine.Windows;
-using GameNetcodeStuff;
-using System.Threading.Tasks;
-using System.Text;
 
 namespace VoiceShipControll.Patches
 {
@@ -26,43 +15,18 @@ namespace VoiceShipControll.Patches
     internal class StartOfRoundPatch : MonoBehaviour
     {
         public static object recognition;
-        public static Recognizer recognizer;
+
         [HarmonyPatch(nameof(StartOfRound.StartTrackingAllPlayerVoices))]
         [HarmonyPostfix]
-        static void AddSoundRecognition(StartOfRound __instance)
+        static async void AddSoundRecognition(StartOfRound __instance)
         {
             Debug.Log("Starting voice ship controll tracking for player: " + __instance.voiceChatModule.LocalPlayerName);
-            ParseVoiceShipControllSettings();
 
-
-            var recognizer = new Recognizer();
-            recognizer.Start();
+            SocketListener.InitSocketListener();
+            SocketListener.OnErrorReceivedEvent += Recognizer.PythonError;
+            SocketListener.OnMessageReceivedEvent += Recognizer.PythonSpeechRecognized;
+            Recognizer.InitRecognizer();
             //InitializeSpeachToText(true);
-
-            //var thread = new Thread(() =>
-            //{
-            //    Task.Run(async () =>
-
-
-            //});
-            //thread.Start();
-            //__instance.localPlayerController.voicePlayerState = __instance.voiceChatModule.FindPlayer(__instance.voiceChatModule.LocalPlayerName);
-            //__instance.localPlayerController.voicePlayerState.OnStartedSpeaking += MicrophoneLisrenerStart;
-            //__instance.localPlayerController.voicePlayerState.OnStoppedSpeaking += MicrophoneLisrenerStop;
-        }
-
-        public static void ParseVoiceShipControllSettings()
-        {
-            Debug.Log("Parse VoiceShipControll Settings");
-            JObject json = JObject.Parse(File.ReadAllText($"{PlaginConstants.PathToFolder}\\VoiceShipControllSettings.json"));
-            PlaginConstants.JarviceVoiceCommands = JObject.FromObject(json["jarvice-voice-commands"]).ToObject<Dictionary<string, string>>();
-            Debug.Log("Parsed JarviceVoiceCommands Count: " + PlaginConstants.JarviceVoiceCommands.Count);
-            PlaginConstants.TerminalVoiceCommands = JObject.FromObject(json["terminal-voice-commands"]).ToObject<Dictionary<string, string>>();
-            Debug.Log("Parsed TerminalVoiceCommands Count: " + PlaginConstants.TerminalVoiceCommands.Count);
-            PlaginConstants.JarvisVoiceAssets = JObject.FromObject(json["jarvice-voice-assets"]).ToObject<Dictionary<string, string>>();
-            Debug.Log("Parsed JarvisVoiceAssets Count: " + PlaginConstants.JarvisVoiceAssets.Count);
-            PlaginConstants.LanguageCode = json.Value<string>("language-code");
-            Debug.Log("Parsed LanguageCode: " + PlaginConstants.LanguageCode);
         }
 
         public static void InitializeSpeachToText(bool isLoaded)

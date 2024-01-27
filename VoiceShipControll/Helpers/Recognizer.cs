@@ -1,90 +1,90 @@
-﻿using Microsoft.Build.Tasks;
+﻿
 using System;
+using System.Collections;
 using System.Diagnostics;
 using System.Linq;
-using System.Net.Sockets;
-using System.Threading;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using Debug = UnityEngine.Debug;
 
 namespace VoiceShipControll.Helpers
 {
     internal class Recognizer : MonoBehaviour
     {
-        private SynchronizationContext _synchronizationContext;
-        Thread _socketServerThread;
-        Thread _recognizerThread;
-        SocketListener _listener;
-        Process recognitionProcess;
-        public void Start()
+        public static Process recognitionProcess;
+        public static Recognizer Instance;
+        public static bool IsProcessStarted;
+        public static bool IsStarted;
+        public static void InitRecognizer(bool visible = false, string name = "Recognizer")
         {
-            _synchronizationContext = new SynchronizationContext();
-            SynchronizationContext.SetSynchronizationContext(_synchronizationContext);
-            _socketServerThread = new Thread(() =>
+            if (Instance != null)
             {
-                _listener = new SocketListener();
-                _listener.OnErrorReceivedEvent += PythonError;
-                _listener.OnMessageReceivedEvent += PythonSpeechRecognized;
-                _listener.StartServer();
-                _listener.StartBroadcasting();
+                return;
+            }
 
-            });
-            _recognizerThread = new Thread(() =>
+            if (Application.isPlaying)
             {
-                Execute();
-            });
+                // add an invisible game object to the scene
+                GameObject obj = new GameObject();
+                if (!visible)
+                {
+                    obj.hideFlags = HideFlags.HideAndDontSave;
+                }
 
-            _recognizerThread.Start();
-            _socketServerThread.Start();
-            Console.WriteLine("Recognizer started");
+                DontDestroyOnLoad(obj);
+                Instance = obj.AddComponent<Recognizer>();
+
+                Debug.Log("Recognizer object created");
+                Instantiate(Instance.gameObject, new Vector3(1, 1, 0), Quaternion.identity);
+            }
         }
 
-        public void Execute()
+        public void Update()
         {
-            recognitionProcess = new Process
+            if (!IsStarted)
             {
-                StartInfo = new ProcessStartInfo
-                {
-                    FileName = $"\"{PlaginConstants.PathToFolder}\\Python312\\python.exe\"",
-                    Arguments = $"\"{PlaginConstants.PathToFolder}\\recognizer.py\" \"en-US\"",
-                    UseShellExecute = false,
-                    CreateNoWindow = true,
-                },
-            };
+                IsStarted = true;
+                Instance.StartCoroutine(Execute());
+            }
+        }
+
+
+        public static IEnumerator Execute()
+        {
+            yield return new WaitForSeconds(0f);
             try
             {
+                recognitionProcess = Process.Start($"{PlaginConstants.PathToFolder}\\dist\\recognizer\\recognizer.exe", $"\"en-US\"");
                 recognitionProcess.Exited += (object sender, EventArgs e) =>
                 {
                     Console.WriteLine("Process exited");
                 };
                 Console.WriteLine("Execute Recognizer started");
                 recognitionProcess.Start();
-                recognitionProcess.WaitForExit(10000);
+                IsProcessStarted = true;
+                Console.WriteLine("Recognizer started");
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                Debug.Log(e);
+            }
+
+        }
+
+
+
+
+        public static void PythonError(string error, EventArgs e)
+        {
+            Console.WriteLine(error);
+            if (error.Contains("speech_recognition.exceptions.WaitTimeoutError"))
+            {
+                IsStarted = false;
             }
         }
 
-
-
-
-        public void PythonError(string error, EventArgs e)
+        public static void PythonSpeechRecognized(string message, EventArgs e)
         {
-            _synchronizationContext.Post((state) =>
-            {
-                Console.WriteLine(error);
-                if (error.Contains("speech_recognition.exceptions.WaitTimeoutError"))
-                {
-                    Execute();
-                }
-            }, null);
-        }
-
-        public void PythonSpeechRecognized(string message, EventArgs e)
-        {
-            _synchronizationContext.Post((state) =>
-            {
                 Console.WriteLine(message);
                 string spokenText = message;
                 var command = PlaginConstants.JarviceVoiceCommands.FirstOrDefault(x => spokenText.ToLower().Contains(x.Value.ToLower()));
@@ -111,9 +111,8 @@ namespace VoiceShipControll.Helpers
                     ShipCommands.ApplyTerminalCommand(command.Key);
                 }
                 
-            }, null);
         }
-        void OnApplicationQuit()
+        static void OnApplicationQuit()
         {
             recognitionProcess.Kill();
         }
