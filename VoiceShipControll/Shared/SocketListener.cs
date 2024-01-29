@@ -1,14 +1,12 @@
-﻿using System.Net;
+﻿using System;
+using System.Collections;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using UnityEngine;
-using System;
-using System.Collections;
-using UnityEngine.SceneManagement;
-using VoiceShipControll.Helpers;
-using System.Threading.Tasks;
 using System.Threading;
-using static UnityEngine.GraphicsBuffer;
+using System.Threading.Tasks;
+using UnityEngine;
+using VoiceShipControll.Helpers;
 
 // Get Host IP Address that is used to establish a connection
 // In this case, we get one IP address of localhost that is IP : 127.0.0.1
@@ -24,11 +22,10 @@ public class SocketListener : MonoBehaviour
     public static int connectionPort = 5050;
     public static event MessageReceivedEvent OnMessageReceivedEvent;
     public static event ErrorReceivedEvent OnErrorReceivedEvent;
-    public static bool isServerStarted = false;
-    public static bool isWaitingMessage = false;
-    public static bool isConnectionStarted = false;
+    public static bool IsServerStarted = false;
+    public static bool IsWaitingMessage = false;
+    public static bool IsConnectionStarted = false;
     public static TaskScheduler mainThreadContext;
-
     public static void InitSocketListener(bool visible = false, string name = "SocketListener")
     {
         if (Instance != null)
@@ -47,15 +44,15 @@ public class SocketListener : MonoBehaviour
 
             DontDestroyOnLoad(obj);
             Instance = obj.AddComponent<SocketListener>();
-            InitServer();
+            StartServer();
 
             Debug.Log("SocketListener object created");
-            Instantiate(Instance.gameObject, new Vector3(1, 1, 0), Quaternion.identity);
+          
         }
         mainThreadContext = TaskScheduler.FromCurrentSynchronizationContext();
     }
 
-    public static void InitServer()
+    public static void StartServer()
     {
         IPAddress ipAddress = IPAddress.Parse("127.0.0.1");
         IPEndPoint localEndPoint = new IPEndPoint(ipAddress, connectionPort);
@@ -66,18 +63,20 @@ public class SocketListener : MonoBehaviour
         Console.WriteLine("Waiting for a connection...");
     }
 
-    public void Update() {
-        if (!isServerStarted)
+    public void Update()
+    {
+        if (!IsServerStarted)
         {
-            if (!isConnectionStarted)
+            if (!IsConnectionStarted && _socket != null)
             {
-                isConnectionStarted = true;
+                IsConnectionStarted = true;
                 Console.WriteLine("Connecting...");
                 Instance.StartCoroutine(Connect());
             }
-        } else
+        }
+        else
         {
-            if (!isWaitingMessage && Recognizer.IsProcessStarted)
+            if (!IsWaitingMessage && Recognizer.IsProcessStarted)
             {
                 Console.WriteLine("Broadcasting started");
                 Instance.StartCoroutine(Broadcasting());
@@ -96,7 +95,7 @@ public class SocketListener : MonoBehaviour
 
             if (_handler != null)
             {
-                isServerStarted = true;
+                IsServerStarted = true;
                 Console.WriteLine("Socket listener started");
                 remoteEndPoint = (IPEndPoint)_handler.RemoteEndPoint;
                 Console.WriteLine($"Accepted connection from {remoteEndPoint}");
@@ -107,14 +106,15 @@ public class SocketListener : MonoBehaviour
 
     public static IEnumerator Broadcasting()
     {
-        isWaitingMessage = true;
-        yield return new WaitForSeconds(1f);
+        IsWaitingMessage = true;
+        yield return new WaitForSeconds(0f);
         SendData("continue");
-        Thread newThread = new Thread(OnReceiveData);
-        newThread.Start();
+        var receiveDataThread = new Thread(OnReceiveData);
+        receiveDataThread.Start();
 
     }
 
+    // creating new receive data task in different thread to listen socket
     static void OnReceiveData()
     {
         Task.Run(() =>
@@ -137,7 +137,7 @@ public class SocketListener : MonoBehaviour
                         Instance.MessageRecivedEventTrigger(data);
                     }
                 }
-                isWaitingMessage = false;
+                IsWaitingMessage = false;
             }, CancellationToken.None, TaskCreationOptions.None, mainThreadContext);
         });
     }
@@ -158,12 +158,6 @@ public class SocketListener : MonoBehaviour
         {
             Console.WriteLine(e.ToString());
         }
-    }
-
-    public void Stop(SocketShutdown shutdown)
-    {
-        _handler.Shutdown(shutdown);
-        _socket.Close();
     }
 
     protected virtual void MessageRecivedEventTrigger(string value)
@@ -188,10 +182,17 @@ public class SocketListener : MonoBehaviour
         }
     }
 
+    public static void StopSocketListener()
+    {   
+        _socket = _handler = null;
+        IsServerStarted = IsWaitingMessage = IsConnectionStarted = false;
+    }
+
     void OnApplicationQuit()
     {
         SendData("stop");
-        Stop(SocketShutdown.Both);
-        _socket.Close();
+        Debug.Log("OnApplicationQuit");
+        StopSocketListener();
     }
+
 }

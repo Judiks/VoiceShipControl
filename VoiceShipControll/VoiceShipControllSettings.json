@@ -1,15 +1,81 @@
 {
   "language-code": "en-US",
+  "buy-keyword": "buy",
+  "buy-voice-commands": {
+    "walkie-talkie": "walkie",
+    "flash": "flash",
+    "pro flashlight": "pro",
+    "flashlight": "flashlight",
+    "survival kit": "survival kit",
+    "lockpicker": "lockpicker",
+    "teleport": "teleport",
+    "jetpack": "jetpack",
+    "boombox": "boombox",
+    "stun": "stun",
+    "mapper": "mapper",
+    "television": "television",
+    "spray paint": "spray paint",
+    "tzp": "tzp",
+    "green suit": "green suit",
+    "hazard suit": "hazard suit",
+    "pajama suit": "pajama suit",
+    "cozy lights": "cozy lights",
+    "signal": "signal",
+    "record": "record",
+    "shower": "shower",
+    "table": "table",
+    "romantic table": "romantic table",
+    "file cabinet": "file cabinet",
+    "cupboard": "cupboard",
+    "bunkbeds": "bunkbeds",
+    "zap gun": "zap gun",
+    "loud horn": "loud horn",
+    "extension ladder": "extension ladder",
+    "inverse teleporter": "inverse",
+    "jackolantern": "jackolantern",
+    "radarr": "radarr",
+    "welcome mat": "welcome mat",
+    "goldfish": "goldfish",
+    "plushie pajama man": "plushie",
+    "purple suit": "purple suit"
+  },
   "terminal-voice-commands": {
-    "start terminal": "i'm on terminal terminal"
+    "confirm": "confirm",
+    "b3": "b3",
+    "c1": "c1",
+    "c2": "c2",
+    "c7": "c7",
+    "d6": "d6",
+    "f2": "f2",
+    "h5": "h5",
+    "i1": "i1",
+    "j6": "j6",
+    "k9": "k9",
+    "l0": "l0",
+    "m6": "m6",
+    "m9": "m9",
+    "o5": "o5",
+    "p1": "p1",
+    "t2": "t2",
+    "u2": "u2",
+    "u9": "u9",
+    "v0": "v0",
+    "x8": "x8",
+    "y9": "y9",
+    "z3": "z3"
   },
-  "jarvice-voice-commands": {
-    "hi jarvis": "hi jarvis",
-    "bye jarvis": "bye jarvis",
-    "start terminal": "i'm on terminal terminal"
+  "voice-commands": {
+    "hello jarvis": "hello jarvis",
+    "goodbye jarvis": "goodbye jarvis",
+    "start terminal": "start terminal"
   },
-  "jarvice-voice-assets": {
-    "hi jarvis": "jarvis-welcome",
-    "bye jarvis": "jarvis-bye | jarvis-welcome"
-  }
+  "voice-assets": {
+    "hello jarvis": "jarvis-i-am-here-as-usual|jarvis-what-you-wish-baby",
+    "goodbye jarvis": "jarvis-goodbye-my-dear|jarvis-ok-as-you-wish-sir"
+  },
+  "start-game-voice-assets": "jarvis-maybe-better-to-stay-on-ship|jarvis-good-luck-team|jarvis-try-not-to-die-please",
+  "end-game-voice-assets": "jarvis-nice-work|jarvis-good-game-team",
+  "buy-success-voice-assets": "jarvis-are-you-sure|jarvis-ok-as-you-wish-sir|jarvis-done|jarvis-i-think-something-happening-there|jarvis-purchase-completed-successfully",
+  "buy-declined-voice-assets": "jarvis-not-enough-money",
+  "welcome-jarvis": "jarvis-welcome"
 }
