@@ -25,11 +25,13 @@ Users can perform the following actions using voice commands:
 - Users can configure each phrase through the LethalConfig menu.
 - Multiple phrases can be associated with a single command you need just split them with '|' this strange symbol.
 - Custom key phrases can be created, and audio assets can be bound to these phrases they also can be separated with '|'.
+  
 ![Show image](https://i.ibb.co/xgcp9SV/Lethal-Config-Menu.png)
 
 #### LethalSetting
 
 - New phrases can be added and configured using LethalSetting.
+  
 ![Show image](https://i.ibb.co/3z3XkV1/Lethal-Settings-Menu.png)
 
 ### 3. Language Configuration
@@ -73,6 +75,7 @@ We are also considering integrating ChatGPT to enhance the voice ship assistant,
 ## Little video about mod
 
 Yeah i know how bad is this video but at least something. Watch on 1.5 speed. Will make new one later
+
 [![Watch the video](https://i9.ytimg.com/vi_webp/QqmwDZ3J-TI/mq2.webp?sqp=COTx860G-oaymwEmCMACELQB8quKqQMa8AEB-AH-CYAC0AWKAgwIABABGFogWihaMA8=&rs=AOn4CLD2e1VhQoohdI6yVhbZBYnnvFl7Qg)](https://www.youtube.com/watch?v=QqmwDZ3J-TI&ab_channel=Judik)
 
 ## Installation
