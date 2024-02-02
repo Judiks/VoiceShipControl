@@ -76,7 +76,7 @@ We are also considering integrating ChatGPT to enhance the voice ship assistant,
 
 Yeah i know how bad is this video but at least something. Watch on 1.5 speed. Will make new one later
 
-[![Watch the video](https://i9.ytimg.com/vi_webp/QqmwDZ3J-TI/mq2.webp?sqp=COTx860G-oaymwEmCMACELQB8quKqQMa8AEB-AH-CYAC0AWKAgwIABABGFogWihaMA8=&rs=AOn4CLD2e1VhQoohdI6yVhbZBYnnvFl7Qg)](https://www.youtube.com/watch?v=QqmwDZ3J-TI&ab_channel=Judik)
+[![Watch the video](https://ibb.co/1R31bx6)](https://www.youtube.com/watch?v=QqmwDZ3J-TI&ab_channel=Judik)
 
 ## Installation
 
