@@ -180,7 +180,6 @@
     <None Include="app.config" />
     <None Include="packages.config" />
     <Compile Include="Enums\SupportedLanguages.cs" />
-    <None Include="README.md" />
     <None Include="VoiceShipControlSettings.json" />
   </ItemGroup>
   <ItemGroup>
