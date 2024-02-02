@@ -6,12 +6,12 @@ using System.Security.AccessControl;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using VoiceShipControll.Helpers;
+using VoiceShipControl.Helpers;
 using static System.Runtime.CompilerServices.RuntimeHelpers;
 using Debug = UnityEngine.Debug;
 using Random = System.Random;
 
-namespace VoiceShipControll.Patches
+namespace VoiceShipControl.Patches
 {
     [HarmonyPatch(typeof(StartOfRound))]
     internal class StartOfRoundPatch : NetworkBehaviour

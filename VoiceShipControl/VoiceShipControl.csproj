@@ -173,14 +173,14 @@
     <Compile Include="Shared\SocketListener.cs" />
     <Compile Include="Patches\StartOfRoundPatch.cs" />
     <Compile Include="Shared\PluginConstants.cs" />
-    <Compile Include="VoiceShipControll.cs" />
+    <Compile Include="VoiceShipControl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
     <Compile Include="Enums\SupportedLanguages.cs" />
-    <None Include="VoiceShipControllSettings.json" />
+    <None Include="VoiceShipControlSettings.json" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="recognizer.py" />

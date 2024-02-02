@@ -12,7 +12,7 @@ using Debug = UnityEngine.Debug;
 using Object = UnityEngine.Object;
 using Random = System.Random;
 
-namespace VoiceShipControll.Helpers
+namespace VoiceShipControl.Helpers
 {
     internal class Recognizer : MonoBehaviour
     {

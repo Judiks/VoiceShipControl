@@ -8,7 +8,7 @@ using UnityEngine;
 using Object = UnityEngine.Object;
 using Random = System.Random;
 
-namespace VoiceShipControll.Helpers
+namespace VoiceShipControl.Helpers
 {
     internal class ShipCommands
     {

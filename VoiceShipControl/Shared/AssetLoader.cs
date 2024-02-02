@@ -2,7 +2,7 @@
 using System.Linq;
 using UnityEngine;
 
-namespace VoiceShipControll.Helpers
+namespace VoiceShipControl.Helpers
 {
     internal class AssetLoader
     {

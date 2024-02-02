@@ -11,23 +11,23 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using UnityEngine;
-using VoiceShipControll.Helpers;
-using VoiceShipControll.Patches;
-using static VoiceShipControll.PluginConstants;
+using VoiceShipControl.Helpers;
+using VoiceShipControl.Patches;
+using static VoiceShipControl.PluginConstants;
 
-namespace VoiceShipControll
+namespace VoiceShipControl
 {
     [BepInPlugin(_modGUID, _modName, _modVersion)]
     [BepInDependency("ainavt.lc.lethalconfig")]
-    public class VoiceShipControll : BaseUnityPlugin
+    public class VoiceShipControl : BaseUnityPlugin
     {
-        private const string _modGUID = "Judik.VoiceShipControll";
-        private const string _modName = "Voice Ship Controll";
+        private const string _modGUID = "Judik.VoiceShipControl";
+        private const string _modName = "Voice Ship Control";
         private const string _modVersion = "1.0.0";
 
         private readonly Harmony harmony = new Harmony(_modGUID);
 
-        public static VoiceShipControll Instance;
+        public static VoiceShipControl Instance;
         internal ManualLogSource _logger;
 
         void Awake()
@@ -41,9 +41,9 @@ namespace VoiceShipControll
                 return;
             }
 
-            ConfigureVoiceShipControllSettings();
+            ConfigureVoiceShipControlSettings();
             _logger = BepInEx.Logging.Logger.CreateLogSource(_modGUID);
-            _logger.LogInfo("Judik.VoiceShipControll has started");
+            _logger.LogInfo("Judik.VoiceShipControl has started");
             harmony.PatchAll(typeof(StartOfRoundPatch));
             AddSettingsMenu();
         }
@@ -74,9 +74,9 @@ namespace VoiceShipControll
                 Description = "Here you can add your own key phrases with assets what should be played like an 'answer' to your in game 'assistant'. " + Environment.NewLine +
                 "1. After any of 'Add' buttons click key phrase will be added to Lethal Config Settings, but not displayed untill game restart." + Environment.NewLine +
                 "2. All key phrases can have multiple meaning. That's mean you can add more than 1 audio asset or phrase connected to same command. To separate it type '|' beetwen phrases/assets." + Environment.NewLine +
-                "3. All key phrases stored in VoiceShipControll.json file. That's mean you can modify them directly there without this menu." + Environment.NewLine +
-                "4. All assets what you can connect stored in VoiceShipControll/Assets folder." + Environment.NewLine +
-                "5. For now there is no logic to remove commands, so if  you want to do it go to VoiceShipControll.json and just remove raw with that command what you want.",
+                "3. All key phrases stored in VoiceShipControl.json file. That's mean you can modify them directly there without this menu." + Environment.NewLine +
+                "4. All assets what you can connect stored in VoiceShipControl/Assets folder." + Environment.NewLine +
+                "5. For now there is no logic to remove commands, so if  you want to do it go to VoiceShipControl.json and just remove raw with that command what you want.",
                 MenuComponents = new MenuComponent[]
                         {
                             new LabelComponent
@@ -171,7 +171,7 @@ namespace VoiceShipControll
         }
 
         // parsing not dinamic values
-        public void ConfigureVoiceShipControllSettings()
+        public void ConfigureVoiceShipControlSettings()
         {
             LethalConfigManager.SetModDescription("Enjoy my friends <3");
             // parsing not dinamic values

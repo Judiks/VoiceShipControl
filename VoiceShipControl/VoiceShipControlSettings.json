@@ -1,6 +1,34 @@
 {
-  "language-code": "en-US",
-  "buy-keyword": "buy",
+  "start-game": "start game",
+  "close-door": "close door",
+  "open-door": "open door",
+  "switch-on": "switch on",
+  "switch-off": "switch off",
+  "reroute-planet-commands": {
+    "the company building": "the company building",
+    "experimentation": "experimentation",
+    "assurance": "assurance",
+    "vow": "vow",
+    "offense": "offense",
+    "march": "march",
+    "rend": "rend",
+    "dine": "dine",
+    "titan": "titan"
+  },
+  "buy-voice-count-commands": {
+    "1": "1|one",
+    "2": "2|two",
+    "3": "3|three",
+    "4": "4|four",
+    "5": "5|five",
+    "6": "6|six",
+    "7": "7|seven",
+    "8": "8|eight",
+    "9": "9|nine",
+    "10": "10|ten",
+    "11": "11|eleven",
+    "12": "12|twelve"
+  },
   "buy-voice-commands": {
     "walkie-talkie": "walkie",
     "flash": "flash",
@@ -40,7 +68,6 @@
     "purple suit": "purple suit"
   },
   "terminal-voice-commands": {
-    "confirm": "confirm",
     "b3": "b3",
     "c1": "c1",
     "c2": "c2",
@@ -56,18 +83,20 @@
     "m9": "m9",
     "o5": "o5",
     "p1": "p1",
+    "r2": "r2",
+    "r4": "r4",
     "t2": "t2",
     "u2": "u2",
     "u9": "u9",
     "v0": "v0",
     "x8": "x8",
     "y9": "y9",
-    "z3": "z3"
+    "z3": "z3",
+    "confirm": "confirm"
   },
   "voice-commands": {
     "hello jarvis": "hello jarvis",
-    "goodbye jarvis": "goodbye jarvis",
-    "start terminal": "start terminal"
+    "goodbye jarvis": "goodbye jarvis"
   },
   "voice-assets": {
     "hello jarvis": "jarvis-i-am-here-as-usual|jarvis-what-you-wish-baby",
@@ -77,5 +106,5 @@
   "end-game-voice-assets": "jarvis-nice-work|jarvis-good-game-team",
   "buy-success-voice-assets": "jarvis-are-you-sure|jarvis-ok-as-you-wish-sir|jarvis-done|jarvis-i-think-something-happening-there|jarvis-purchase-completed-successfully",
   "buy-declined-voice-assets": "jarvis-not-enough-money",
-  "welcome-jarvis": "jarvis-welcome"
+  "ship-intro-assets": "jarvis-welcome"
 }

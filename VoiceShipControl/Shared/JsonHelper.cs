@@ -2,26 +2,26 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace VoiceShipControll.Helpers
+namespace VoiceShipControl.Helpers
 {
     internal class JsonHelper
     {
         public static string GetValue(string key)
         {
-            JObject json = JObject.Parse(File.ReadAllText($"{PluginConstants.PathToFolder}\\VoiceShipControllSettings.json"));
+            JObject json = JObject.Parse(File.ReadAllText($"{PluginConstants.PathToFolder}\\VoiceShipControlSettings.json"));
             var resul = json.Value<string>(key); ;
             return resul;
         }
         public static Dictionary<string, string> GetKeyValuePairs(string key)
         {
-            JObject json = JObject.Parse(File.ReadAllText($"{PluginConstants.PathToFolder}\\VoiceShipControllSettings.json"));
+            JObject json = JObject.Parse(File.ReadAllText($"{PluginConstants.PathToFolder}\\VoiceShipControlSettings.json"));
             var resul = JObject.FromObject(json[key]).ToObject<Dictionary<string, string>>();
             return resul;
         }
         public static void SetKeyValuePair(string key, string subKey, string value)
         {
             // Specify the path to your JSON file
-            string filePath = $"{PluginConstants.PathToFolder}\\VoiceShipControllSettings.json";
+            string filePath = $"{PluginConstants.PathToFolder}\\VoiceShipControlSettings.json";
 
             // Read the JSON file into a string
             string jsonString = File.ReadAllText(filePath);

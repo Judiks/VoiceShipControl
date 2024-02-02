@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.LowLevel;
-using VoiceShipControll;
-using VoiceShipControll.Helpers;
-using VoiceShipControll.Shared;
+using VoiceShipControl;
+using VoiceShipControl.Helpers;
+using VoiceShipControl.Shared;
 
 // Get Host IP Address that is used to establish a connection
 // In this case, we get one IP address of localhost that is IP : 127.0.0.1

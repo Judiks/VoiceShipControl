@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using Random = System.Random;
 
-namespace VoiceShipControll.Helpers
+namespace VoiceShipControl.Helpers
 {
     internal class AudioClipHelper
     {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.InputSystem.LowLevel;
 
-namespace VoiceShipControll.Shared
+namespace VoiceShipControl.Shared
 {
     public class KeyBindingHelper
     {

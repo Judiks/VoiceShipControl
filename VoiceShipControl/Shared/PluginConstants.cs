@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace VoiceShipControll
+namespace VoiceShipControl
 {
     public static class PluginConstants
     {   // DEFOULT
@@ -12,7 +12,7 @@ namespace VoiceShipControll
         public static ConfigEntry<bool> IsUserCanUseCommandsWhenDead;
         public static ConfigEntry<KeyCode> VoiceActivationButton;
         public static ConfigEntry<SupportedLanguages> LanguageCode;
-        public static string PathToFolder = VoiceShipControll.Instance.Info.Location.TrimEnd("VoiceShipControll.dll".ToCharArray());
+        public static string PathToFolder = VoiceShipControl.Instance.Info.Location.TrimEnd("VoiceShipControl.dll".ToCharArray());
 
         // COMMANDS
 

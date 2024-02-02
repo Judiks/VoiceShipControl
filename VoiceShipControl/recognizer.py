@@ -1,7 +1,6 @@
 import speech_recognition as sr
 import sys
 import socket
-import select
 
 host, port = "127.0.0.1", 5050
 # SOCK_STREAM means TCP socket
