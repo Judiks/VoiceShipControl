@@ -1,4 +1,5 @@
-﻿using Cysharp.Threading.Tasks.Triggers;
+﻿using BepInEx.Configuration;
+using Cysharp.Threading.Tasks.Triggers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,8 +17,7 @@ namespace VoiceShipControll.Helpers
         {
             try
             {
-
-
+                Console.WriteLine("Start Play audioSource " + assetName);
                 var result = AssetLoader.Load<AudioClip>(assetName);
                 if (result.Item1 == null)
                 {
@@ -33,7 +33,14 @@ namespace VoiceShipControll.Helpers
                     return;
                 }
                 Console.WriteLine("PlayAudioSourceVoice Play");
-                audioSource.PlayOneShot(result.Item1);
+                if (audioSource.isPlaying)
+                {
+                    audioSource.Stop();
+                    audioSource.PlayOneShot(result.Item1);
+                } else
+                {
+                    audioSource.PlayOneShot(result.Item1);
+                }
                 result.Item2.Unload(false);
             }
             catch (Exception ex)
@@ -51,21 +58,23 @@ namespace VoiceShipControll.Helpers
             }
             try
             {
-                var assetNamesString = string.Empty;
-                var voiceAssets = JsonReader.GetKeyValuePairs(PluginConstants.VoiceAssetsKey);
-                voiceAssets.TryGetValue(assetKey, out assetNamesString);
-                Console.WriteLine(assetNamesString + " founded asset");
-                if (string.IsNullOrEmpty(assetNamesString)) { return; }
-                if (assetNamesString.Contains("|"))
+                Debug.Log(assetKey);
+                var assetNameValuePair = PluginConstants.VoicePlayAudioAssetNames.FirstOrDefault(x => x.Key == assetKey);
+                if (assetNameValuePair.Value != null && !string.IsNullOrEmpty(assetNameValuePair.Value.Value) && !string.IsNullOrEmpty(assetNameValuePair.Key))
                 {
-                    Console.WriteLine(assetNamesString + " Contains |");
-                    var assetNames = assetNamesString.Split('|');
-                    var random = new Random();
-                    int assetNameIndex = random.Next(0, assetNames.Length);
-                    PlayAudioSourceVoice(assetNames[assetNameIndex], audioSource);
-                    return;
+                    Console.WriteLine(assetNameValuePair.Value.Value + " founded asset");
+                    if (string.IsNullOrEmpty(assetNameValuePair.Value.Value)) { return; }
+                    if (assetNameValuePair.Value.Value.Contains("|"))
+                    {
+                        Console.WriteLine(assetNameValuePair.Value.Value + " Contains |");
+                        var assetNames = assetNameValuePair.Value.Value.Split('|');
+                        var random = new Random();
+                        int assetNameIndex = random.Next(0, assetNames.Length);
+                        PlayAudioSourceVoice(assetNames[assetNameIndex], audioSource);
+                        return;
+                    }
+                    PlayAudioSourceVoice(assetNameValuePair.Value.Value, audioSource);
                 }
-                PlayAudioSourceVoice(assetNamesString, audioSource);
             }
             catch (Exception ex)
             {
@@ -73,7 +82,7 @@ namespace VoiceShipControll.Helpers
             }
         }
 
-        public static void PlayAudioSourceByKey(string assetKey, AudioSource audioSource)
+        public static void PlayAudioSourceByValue(string assetValue, AudioSource audioSource)
         {
             if (audioSource == null)
             {
@@ -82,20 +91,18 @@ namespace VoiceShipControll.Helpers
             }
             try
             {
-                var assetNamesString = string.Empty;
-                assetNamesString = JsonReader.GetValue(assetKey);
-                Console.WriteLine(assetNamesString + " founded asset");
-                if (string.IsNullOrEmpty(assetNamesString)) { return; }
-                if (assetNamesString.Contains("|"))
+                Console.WriteLine(assetValue + " founded asset");
+                if (string.IsNullOrEmpty(assetValue)) { return; }
+                if (assetValue.Contains("|"))
                 {
-                    Console.WriteLine(assetNamesString + " Contains |");
-                    var assetNames = assetNamesString.Split('|');
+                    Console.WriteLine(assetValue + " Contains |");
+                    var assetNames = assetValue.Split('|');
                     var random = new Random();
                     int assetNameIndex = random.Next(0, assetNames.Length);
                     PlayAudioSourceVoice(assetNames[assetNameIndex], audioSource);
                     return;
                 }
-                PlayAudioSourceVoice(assetNamesString, audioSource);
+                PlayAudioSourceVoice(assetValue, audioSource);
             }
             catch (Exception ex)
             {

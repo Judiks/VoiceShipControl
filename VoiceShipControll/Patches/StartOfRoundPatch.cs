@@ -1,9 +1,13 @@
-﻿using HarmonyLib;
+﻿using BepInEx;
+using HarmonyLib;
 using System;
+using System.Collections;
+using System.Security.AccessControl;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using VoiceShipControll.Helpers;
+using static System.Runtime.CompilerServices.RuntimeHelpers;
 using Debug = UnityEngine.Debug;
 using Random = System.Random;
 
@@ -17,7 +21,7 @@ namespace VoiceShipControll.Patches
 
         [HarmonyPatch(nameof(StartOfRound.LateUpdate))]
         [HarmonyPostfix]
-        static async void AddSoundRecognition(StartOfRound __instance)
+        static void AddSoundRecognition(StartOfRound __instance)
         {
             Instance = __instance;
             if (Instance == null)
@@ -28,7 +32,7 @@ namespace VoiceShipControll.Patches
             {
                 IsRecognitionEnabled = true;
                 EnambleRecognition();
-                var audioClip = AssetLoader.Load<AudioClip>(PluginConstants.WelcomeJarvisKey);
+                var audioClip = AssetLoader.Load<AudioClip>(PluginConstants.ShipIntroAudioAssetName.Value);
                 if (audioClip.Item2 != null && audioClip.Item1 != null) { 
                     __instance.shipIntroSpeechSFX = audioClip.Item1;   
                 }
@@ -62,21 +66,39 @@ namespace VoiceShipControll.Patches
 
         [HarmonyPatch(nameof(StartOfRound.StartGame))]
         [HarmonyPostfix]
-        static async void PlayStartGameAudio()
+        static void PlayStartGameAudio()
         {
-            AudioClipHelper.PlayAudioSourceByKey(PluginConstants.StartGameAudioKey, StartOfRound.Instance.speakerAudioSource);
+            AudioClipHelper.PlayAudioSourceByValue(PluginConstants.StartOfRoundAudioAssetName.Value, StartOfRound.Instance.speakerAudioSource);
         }
+        public static GameObject FindAllInChildren(GameObject parent)
+        {
+            // Check children recursively
+            foreach (Transform child in parent.transform)
+            {
+                Debug.Log("Clicked objectName.name: " + child.gameObject.name);
+                Debug.Log("Clicked objectName.transform.name: " + child.gameObject.transform.name);
+                Debug.Log("Clicked objectName.transform.name: " + Vector3.Distance(UnityInput.Current.mousePosition, child.transform.position));
+                var gameObject = FindAllInChildren(child.gameObject);
+                if (gameObject != null)
+                {
+                    // ButtonInfo script found in one of the children
+                    return gameObject;
+                }
+            }
 
+            // ButtonInfo script not found in the current object or its children
+            return null;
+        }
         [HarmonyPatch(nameof(StartOfRound.EndGameServerRpc))]
         [HarmonyPostfix]
-        static async void PlayEndGameAudio()
+        static void PlayEndGameAudio()
         {
-            AudioClipHelper.PlayAudioSourceByKey(PluginConstants.EndGameAudioKey, StartOfRound.Instance.speakerAudioSource);
+            AudioClipHelper.PlayAudioSourceByValue(PluginConstants.EndOfRoundAudioAssetName.Value, StartOfRound.Instance.speakerAudioSource);
         }
 
         [HarmonyPatch(nameof(StartOfRound.OnDestroy))]
         [HarmonyPrefix]
-        static async void OnDestroy()
+        static void OnDestroy()
         {
             SocketListener.StopSocketListener();
             Recognizer.StopRecognizer();

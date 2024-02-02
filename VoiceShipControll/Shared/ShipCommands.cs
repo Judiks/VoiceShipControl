@@ -1,5 +1,9 @@
-﻿using System;
+﻿using GameNetcodeStuff;
+using System;
 using System.Linq;
+using System.Numerics;
+using System.Threading;
+using System.Threading.Tasks;
 using UnityEngine;
 using Object = UnityEngine.Object;
 using Random = System.Random;
@@ -8,26 +12,93 @@ namespace VoiceShipControll.Helpers
 {
     internal class ShipCommands
     {
-
-        public static void ApplyTerminalCommand(string inputText)
+        public static void RerouteCommand(string inputText)
         {
-            var terminal = Object.FindObjectOfType<Terminal>();
-            if (HUDManager.Instance == null || GameNetworkManager.Instance == null || GameNetworkManager.Instance.localPlayerController == null || terminal == null)
+            try
             {
-                Console.WriteLine("terminal is null");
-                return;
+                Debug.Log("isInHangarShipRoom: " + StartOfRound.Instance.localPlayerController.isInHangarShipRoom + " for player:" + StartOfRound.Instance.localPlayerController.name);
+
+                var terminal = Object.FindObjectOfType<Terminal>();
+                if (HUDManager.Instance == null || GameNetworkManager.Instance == null || GameNetworkManager.Instance.localPlayerController == null || terminal == null)
+                {
+                    Console.WriteLine("terminal is null");
+                    return;
+                }
+                terminal.BeginUsingTerminal();
+                terminal.screenText.text = string.Empty;
+                terminal.currentText = string.Empty;
+                terminal.textAdded = 0;
+                terminal.TextChanged(inputText);
+                terminal.screenText.text = inputText;
+                terminal.OnSubmit();
+                if (terminal.currentNode.name == "CannotAfford")
+                {
+                    terminal.QuitTerminal();
+                    AudioClipHelper.PlayAudioSourceByValue(PluginConstants.BuyDeclinedAudioAssetName.Value, StartOfRound.Instance.speakerAudioSource);
+                    return;
+                }
+                terminal.TextChanged(string.Empty);
+                terminal.screenText.text = string.Empty;
+                terminal.currentText = string.Empty;
+                terminal.textAdded = 0;
+                terminal.TextChanged("confirm");
+                terminal.screenText.text = "confirm";
+                terminal.OnSubmit();
+                Debug.Log(terminal.currentNode.name);
+                if (terminal.currentNode.name == "CannotAfford")
+                {
+                    terminal.QuitTerminal();
+                    AudioClipHelper.PlayAudioSourceByValue(PluginConstants.BuyDeclinedAudioAssetName.Value, StartOfRound.Instance.speakerAudioSource);
+                    return;
+                }
+                else
+                {
+                    AudioClipHelper.PlayAudioSourceByValue(PluginConstants.BuySuccessAudioAssetName.Value, StartOfRound.Instance.speakerAudioSource);
+                }
+                terminal.QuitTerminal();
             }
-            terminal.terminalInUse = true;
-            GameNetworkManager.Instance.localPlayerController.inTerminalMenu = true;
-            terminal.LoadNewNode(terminal.terminalNodes.specialNodes[13]);
-            terminal.TextChanged(string.Empty);
-            terminal.SetTerminalInUseLocalClient(inUse: true);
-            terminal.screenText.text = string.Empty;
-            terminal.currentText = string.Empty;
-            terminal.textAdded = 0;
-            terminal.TextChanged(inputText);
-            terminal.screenText.text = inputText;
-            terminal.OnSubmit();
+            catch (Exception ex)
+            {
+                Debug.Log(ex);
+            }
+            //ShowAllTerminalData();
+        }
+        public static void TerminalCommand(string inputText)
+        {
+            try
+            {
+                Debug.Log("isInHangarShipRoom: " + StartOfRound.Instance.localPlayerController.isInHangarShipRoom + " for player:" + StartOfRound.Instance.localPlayerController.name);
+
+                var terminal = Object.FindObjectOfType<Terminal>();
+                if (HUDManager.Instance == null || GameNetworkManager.Instance == null || GameNetworkManager.Instance.localPlayerController == null || terminal == null)
+                {
+                    Console.WriteLine("terminal is null");
+                    return;
+                }
+                if (StartOfRound.Instance.localPlayerController.inTerminalMenu)
+                {
+                    terminal.screenText.text = string.Empty;
+                    terminal.currentText = string.Empty;
+                    terminal.textAdded = 0;
+                    terminal.TextChanged(inputText);
+                    terminal.screenText.text = inputText;
+                    terminal.OnSubmit();
+                } else
+                {
+                    terminal.BeginUsingTerminal();
+                    terminal.screenText.text = string.Empty;
+                    terminal.currentText = string.Empty;
+                    terminal.textAdded = 0;
+                    terminal.TextChanged(inputText);
+                    terminal.screenText.text = inputText;
+                    terminal.OnSubmit();
+                    terminal.QuitTerminal();
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.Log(ex);
+            }
         }
 
         public static void BuyCommand(string inputText)
@@ -55,7 +126,7 @@ namespace VoiceShipControll.Helpers
                 if (terminal.currentNode.name == "CannotAfford")
                 {
                     terminal.QuitTerminal();
-                    AudioClipHelper.PlayAudioSourceByKey(PluginConstants.BuyDeclinedAudioKey, StartOfRound.Instance.speakerAudioSource);
+                    AudioClipHelper.PlayAudioSourceByValue(PluginConstants.BuyDeclinedAudioAssetName.Value, StartOfRound.Instance.speakerAudioSource);
                     return;
                 }
                 terminal.TextChanged(string.Empty);
@@ -67,10 +138,10 @@ namespace VoiceShipControll.Helpers
                 terminal.OnSubmit();
                 if (terminal.currentNode.name != "ParserError1")
                 {
-                    AudioClipHelper.PlayAudioSourceByKey(PluginConstants.BuySuccessAudioKey, StartOfRound.Instance.speakerAudioSource);
+                    AudioClipHelper.PlayAudioSourceByValue(PluginConstants.BuySuccessAudioAssetName.Value, StartOfRound.Instance.speakerAudioSource);
                 }
                 terminal.QuitTerminal();
-                //ShowAllTerminalData();
+               
             }
             catch (Exception ex)
             {

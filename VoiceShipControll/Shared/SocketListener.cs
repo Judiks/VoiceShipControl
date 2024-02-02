@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BepInEx;
+using System;
 using System.Collections;
 using System.Net;
 using System.Net.Sockets;
@@ -6,7 +7,11 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.LowLevel;
+using VoiceShipControll;
 using VoiceShipControll.Helpers;
+using VoiceShipControll.Shared;
 
 // Get Host IP Address that is used to establish a connection
 // In this case, we get one IP address of localhost that is IP : 127.0.0.1
@@ -76,7 +81,11 @@ public class SocketListener : MonoBehaviour
         }
         else
         {
-            if (!IsWaitingMessage && Recognizer.IsProcessStarted)
+            KeyCode keyCode = PluginConstants.VoiceActivationButton.Value;
+            int mouseKeyCode = KeyBindingHelper.GetMouseButton(keyCode);
+            if (Recognizer.IsProcessStarted && 
+                (((UnityInput.Current.GetKeyDown(keyCode) || UnityInput.Current.GetMouseButtonDown(mouseKeyCode)) && PluginConstants.IsVoiceActivationButtonNeeded.Value) 
+                || (IsWaitingMessage && !PluginConstants.IsVoiceActivationButtonNeeded.Value)))
             {
                 Console.WriteLine("Broadcasting started");
                 Instance.StartCoroutine(Broadcasting());
@@ -174,7 +183,7 @@ public class SocketListener : MonoBehaviour
     protected virtual void ErrorRecivedEventTrigger(string value)
     {
         ErrorReceivedEvent handler = OnErrorReceivedEvent;
-
+        Debug.Log(value);
         // Check if there are any subscribers to the event
         if (handler != null)
         {
@@ -183,14 +192,14 @@ public class SocketListener : MonoBehaviour
     }
 
     public static void StopSocketListener()
-    {   
+    {
+        SendData("stop");
         _socket = _handler = null;
         IsServerStarted = IsWaitingMessage = IsConnectionStarted = false;
     }
 
     void OnApplicationQuit()
     {
-        SendData("stop");
         Debug.Log("OnApplicationQuit");
         StopSocketListener();
     }
