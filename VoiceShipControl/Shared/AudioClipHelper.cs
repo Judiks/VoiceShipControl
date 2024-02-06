@@ -1,10 +1,5 @@
-﻿using BepInEx.Configuration;
-using Cysharp.Threading.Tasks.Triggers;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using Random = System.Random;
 
@@ -19,29 +14,30 @@ namespace VoiceShipControl.Helpers
             {
                 Console.WriteLine("Start Play audioSource " + assetName);
                 var result = AssetLoader.Load<AudioClip>(assetName);
-                if (result.Item1 == null)
+                if (result.Result == null)
                 {
-                    if (result.Item2 != null)
+                    if (result.Bundle != null)
                     {
-                        result.Item2.Unload(false);
+                        result.Bundle.Unload(false);
                     }
                     return;
                 }
                 if (audioSource == null)
                 {
-                    result.Item2.Unload(false);
+                    result.Bundle.Unload(false);
                     return;
                 }
                 Console.WriteLine("PlayAudioSourceVoice Play");
                 if (audioSource.isPlaying)
                 {
                     audioSource.Stop();
-                    audioSource.PlayOneShot(result.Item1);
-                } else
-                {
-                    audioSource.PlayOneShot(result.Item1);
+                    audioSource.PlayOneShot(result.Result);
                 }
-                result.Item2.Unload(false);
+                else
+                {
+                    audioSource.PlayOneShot(result.Result);
+                }
+                result.Bundle.Unload(false);
             }
             catch (Exception ex)
             {

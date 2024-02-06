@@ -33,7 +33,8 @@ namespace VoiceShipControl.Helpers
             {
                 // Modify the JSON object (add a new property)
                 jsonObject[key] = value;
-            } else
+            }
+            else
             {
                 // Modify the JSON object (add a new property)
                 jsonObject[subKey][key] = value;
