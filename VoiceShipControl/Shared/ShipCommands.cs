@@ -1,12 +1,7 @@
-﻿using GameNetcodeStuff;
-using System;
+﻿using System;
 using System.Linq;
-using System.Numerics;
-using System.Threading;
-using System.Threading.Tasks;
 using UnityEngine;
 using Object = UnityEngine.Object;
-using Random = System.Random;
 
 namespace VoiceShipControl.Helpers
 {
@@ -83,7 +78,8 @@ namespace VoiceShipControl.Helpers
                     terminal.TextChanged(inputText);
                     terminal.screenText.text = inputText;
                     terminal.OnSubmit();
-                } else
+                }
+                else
                 {
                     terminal.BeginUsingTerminal();
                     terminal.screenText.text = string.Empty;
@@ -141,7 +137,7 @@ namespace VoiceShipControl.Helpers
                     AudioClipHelper.PlayAudioSourceByValue(PluginConstants.BuySuccessAudioAssetName.Value, StartOfRound.Instance.speakerAudioSource);
                 }
                 terminal.QuitTerminal();
-               
+
             }
             catch (Exception ex)
             {

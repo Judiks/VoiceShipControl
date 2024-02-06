@@ -1,12 +1,22 @@
-﻿using HarmonyLib;
-using System.Linq;
+﻿using System.Linq;
 using UnityEngine;
 
 namespace VoiceShipControl.Helpers
 {
+    class AssetData<T>
+    {
+        public T Result { get; set; }
+        public AssetBundle Bundle { get; set; }
+
+        public AssetData(T result, AssetBundle bundle)
+        {
+            Result = result;
+            Bundle = bundle;
+        }
+    }
     internal class AssetLoader
     {
-        public static (T, AssetBundle) Load<T>(string assetName) where T : UnityEngine.Object
+        public static AssetData<T> Load<T>(string assetName) where T : UnityEngine.Object
         {
             T result;
             var bundle = AssetBundle.GetAllLoadedAssetBundles().FirstOrDefault(x => x.name == assetName);
@@ -20,7 +30,8 @@ namespace VoiceShipControl.Helpers
                 if (result != null)
                 {
                     Debug.Log($"{assetName} loaded succesfuly");
-                } else
+                }
+                else
                 {
                     Debug.Log($"{assetName} asset not exist");
                 }
@@ -30,7 +41,7 @@ namespace VoiceShipControl.Helpers
                 result = null;
                 Debug.Log($"Error while loading {assetName}");
             }
-            return (result, bundle);
+            return new AssetData<T>(result, bundle);
         }
     }
 

@@ -14,7 +14,7 @@ using Random = System.Random;
 namespace VoiceShipControl.Patches
 {
     [HarmonyPatch(typeof(StartOfRound))]
-    internal class StartOfRoundPatch : NetworkBehaviour
+    public class StartOfRoundPatch : NetworkBehaviour
     {
         public static StartOfRound Instance;
         public static bool IsRecognitionEnabled;
@@ -33,31 +33,21 @@ namespace VoiceShipControl.Patches
                 IsRecognitionEnabled = true;
                 EnambleRecognition();
                 var audioClip = AssetLoader.Load<AudioClip>(PluginConstants.ShipIntroAudioAssetName.Value);
-                if (audioClip.Item2 != null && audioClip.Item1 != null) { 
-                    __instance.shipIntroSpeechSFX = audioClip.Item1;   
+                if (audioClip.Bundle != null && audioClip.Result != null)
+                {
+                    __instance.shipIntroSpeechSFX = audioClip.Result;
                 }
             }
         }
 
         private static void EnambleRecognition()
         {
-            Debug.Log("Starting voice ship controll tracking for player: " + Instance.voiceChatModule.LocalPlayerName);
-            if (SocketListener.Instance == null)
-            {
-                Debug.Log("SocketListener not founded initializing");
-                SocketListener.InitSocketListener();
-                SocketListener.OnErrorReceivedEvent += Recognizer.PythonError;
-                SocketListener.OnMessageReceivedEvent += Recognizer.PythonSpeechRecognized;
-            } else
-            {
-                SocketListener.StartServer();
-            }
             if (Recognizer.Instance == null)
             {
                 Debug.Log("Recognizer not founded initializing");
                 Recognizer.InitRecognizer();
 
-            } 
+            }
             else
             {
                 Recognizer.IsStarted = Recognizer.IsProcessStarted = false;
@@ -89,6 +79,7 @@ namespace VoiceShipControl.Patches
             // ButtonInfo script not found in the current object or its children
             return null;
         }
+
         [HarmonyPatch(nameof(StartOfRound.EndGameServerRpc))]
         [HarmonyPostfix]
         static void PlayEndGameAudio()
@@ -100,7 +91,6 @@ namespace VoiceShipControl.Patches
         [HarmonyPrefix]
         static void OnDestroy()
         {
-            SocketListener.StopSocketListener();
             Recognizer.StopRecognizer();
             IsRecognitionEnabled = false;
             Debug.Log("recognizer stopped");

@@ -40,7 +40,6 @@ namespace VoiceShipControl
             {
                 return;
             }
-
             ConfigureVoiceShipControlSettings();
             _logger = BepInEx.Logging.Logger.CreateLogSource(_modGUID);
             _logger.LogInfo("Judik.VoiceShipControl has started");
@@ -182,7 +181,7 @@ namespace VoiceShipControl
             VoiceActivationButton = Config.Bind("General",
                  "Voice Command Activation Button",
                  KeyCode.Mouse4,
-                 "Voice command activation button"); 
+                 "Voice command activation button");
             IsVoiceActivationButtonNeeded = Config.Bind("General",
                 "Is voice activation button needed?",
                 true,
