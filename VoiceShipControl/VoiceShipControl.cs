@@ -194,6 +194,10 @@ namespace VoiceShipControl
                 "Is user can use commands when dead?",
                 false,
                 "If user can use commands outside the ship then x if not empty");
+            IsUserCanUseTeleportAlways = Config.Bind("General",
+                "Is user can use teleport always?",
+                false,
+                "If user can use teleport without cooldown");
             BuyKeyPhrase = Config.Bind("Main key phrases",
                 "Buy Key Phrase",
                 "buy|need|waiting",
@@ -211,9 +215,15 @@ namespace VoiceShipControl
 
             var startGameCommand = JsonHelper.GetValue(PluginConstants.StartGameKey);
             StartGame = Config.Bind("Static commands",
-                "Start game (host only)",
+                "Start game",
                 startGameCommand,
                 "Start game command. You can separate text with '|' to add multiple options");
+
+            var endGameCommand = JsonHelper.GetValue(PluginConstants.EndGameKey);
+            EndGame = Config.Bind("Static commands",
+                "End game",
+                endGameCommand,
+                "End game command. You can separate text with '|' to add multiple options");
 
             var openDoorCommand = JsonHelper.GetValue(PluginConstants.OpenDoorKey);
             OpenDoor = Config.Bind("Static commands",
@@ -238,6 +248,30 @@ namespace VoiceShipControl
                 "Turn OFF ship light",
                 switchOffCommand,
                 "Turn OFF ship light command. You can separate text with '|' to add multiple options");
+
+            var teleporterCommand = JsonHelper.GetValue(PluginConstants.TeleporterKey);
+            Teleporter = Config.Bind("Static commands",
+                "Start teleporter",
+                teleporterCommand,
+                "Start ship teleporter command. You can separate text with '|' to add multiple options");
+
+            var inverseTeleporterCommand = JsonHelper.GetValue(PluginConstants.InverseTeleporterKey);
+            InverseTeleporter = Config.Bind("Static commands",
+                "Start inverse teleporter",
+                inverseTeleporterCommand,
+                "Start inverse teleporter command. You can separate text with '|' to add multiple options");
+
+            var switchMonitorCommand = JsonHelper.GetValue(PluginConstants.SwitchMonitorKey);
+            SwitchMonitor = Config.Bind("Static commands",
+                "Switch monitor view",
+                switchMonitorCommand,
+                "Switch monitor view command. You can separate text with '|' to add multiple options");
+
+            var toogleMonitorCommand = JsonHelper.GetValue(PluginConstants.ToggleMonitorKey);
+            ToggleMonitor = Config.Bind("Static commands",
+                "Toggle monitor",
+                toogleMonitorCommand,
+                "Toggle monitor command. You can separate text with '|' to add multiple options");
 
             var shipIntroAudioAssetName = JsonHelper.GetValue(PluginConstants.ShipIntroAudioAssetNameKey);
             ShipIntroAudioAssetName = Config.Bind("Static assets",

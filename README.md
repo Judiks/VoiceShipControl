@@ -17,6 +17,9 @@ Users can perform the following actions using voice commands:
 - Open/close doors on the location without using the terminal
 - Redirect to other moons
 - Transmit messages
+- Teleportation
+- Inverse teleportation
+- Switching views on the monitor
 
 ### 2. Configuration
 
@@ -41,19 +44,16 @@ Users can perform the following actions using voice commands:
 
 ### 4. Input Binding
 
-- Recognizer can be bound to keyboard or mouse buttons for convenience.
+- Recognizer can be bound to keyboard or mouse buttons for convenience. 
 
 ## Planned Future Features
 
-In future updates, we plan to introduce additional voice commands, including:
+In future updates, i plan to introduce additional voice commands, including:
 
-- Teleportation
-- Inverse teleportation
 - Televisor control
-- Switching views on the monitor
-- And others... You can send me ideas to my [discord account](https://discordapp.com/users/_judik_)
-
-We are also considering integrating ChatGPT to enhance the voice ship assistant, allowing users to engage in conversations with in-game NPCs.
+- Insta murder of a player if you can tell his nickname? xD
+- Add an adequate selection of keys responsible for commands.
+- And others... (IDK) You can send me ideas to my [discord account](https://discordapp.com/users/_judik_)
 
 ## Usage
 
@@ -84,6 +84,10 @@ Yeah i know how bad is this video but at least something. Watch on 1.5 speed. Wi
 2. Place all files to single folder and call it VoiceShipControl.
 3. Run game.
 4. If LethalConfig not showing this mode in menu try to restart the game ^^
+
+## Note
+
+If you want make audio assets like in my app you can generate MP3 [here](https://www.101soundboards.com/boards/80040-jarvis-mcu-tts-computer-ai-voice#goog_rewarded) and compile it with unity to asset ♥
 
 ## Support and Feedback
 

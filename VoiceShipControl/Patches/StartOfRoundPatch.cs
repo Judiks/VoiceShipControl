@@ -9,6 +9,7 @@ using UnityEngine.SceneManagement;
 using VoiceShipControl.Helpers;
 using static System.Runtime.CompilerServices.RuntimeHelpers;
 using Debug = UnityEngine.Debug;
+using Object = UnityEngine.Object;
 using Random = System.Random;
 
 namespace VoiceShipControl.Patches
@@ -42,6 +43,17 @@ namespace VoiceShipControl.Patches
 
         private static void EnambleRecognition()
         {
+            if (SocketListener.Instance == null)
+            {
+                Debug.Log("SocketListener not founded initializing");
+                SocketListener.InitSocketListener();
+                SocketListener.OnErrorReceivedEvent += Recognizer.PythonError;
+                SocketListener.OnMessageReceivedEvent += Recognizer.PythonSpeechRecognized;
+            }
+            else
+            {
+                SocketListener.StartServer();
+            }
             if (Recognizer.Instance == null)
             {
                 Debug.Log("Recognizer not founded initializing");
@@ -58,26 +70,9 @@ namespace VoiceShipControl.Patches
         [HarmonyPostfix]
         static void PlayStartGameAudio()
         {
+            var terminal = Object.FindObjectOfType<Terminal>();
+            //terminal.groupCredits = 100000;
             AudioClipHelper.PlayAudioSourceByValue(PluginConstants.StartOfRoundAudioAssetName.Value, StartOfRound.Instance.speakerAudioSource);
-        }
-        public static GameObject FindAllInChildren(GameObject parent)
-        {
-            // Check children recursively
-            foreach (Transform child in parent.transform)
-            {
-                Debug.Log("Clicked objectName.name: " + child.gameObject.name);
-                Debug.Log("Clicked objectName.transform.name: " + child.gameObject.transform.name);
-                Debug.Log("Clicked objectName.transform.name: " + Vector3.Distance(UnityInput.Current.mousePosition, child.transform.position));
-                var gameObject = FindAllInChildren(child.gameObject);
-                if (gameObject != null)
-                {
-                    // ButtonInfo script found in one of the children
-                    return gameObject;
-                }
-            }
-
-            // ButtonInfo script not found in the current object or its children
-            return null;
         }
 
         [HarmonyPatch(nameof(StartOfRound.EndGameServerRpc))]
@@ -91,6 +86,7 @@ namespace VoiceShipControl.Patches
         [HarmonyPrefix]
         static void OnDestroy()
         {
+            SocketListener.StopSocketListener();
             Recognizer.StopRecognizer();
             IsRecognitionEnabled = false;
             Debug.Log("recognizer stopped");

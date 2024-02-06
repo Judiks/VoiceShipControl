@@ -1,9 +1,14 @@
 {
   "start-game": "start game",
+  "end-game": "start game",
   "close-door": "close door",
   "open-door": "open door",
   "switch-on": "switch on",
   "switch-off": "switch off",
+  "teleporter": "start teleporter",
+  "inverse-teleporter": "start inverse teleporter",
+  "switch-monitor": "next",
+  "toggle-monitor": "toggle monitor",
   "reroute-planet-commands": {
     "the company building": "the company building",
     "experimentation": "experimentation",
@@ -36,7 +41,7 @@
     "flashlight": "flashlight",
     "survival kit": "survival kit",
     "lockpicker": "lockpicker",
-    "teleport": "teleport",
+    "teleporter": "teleport",
     "jetpack": "jetpack",
     "boombox": "boombox",
     "stun": "stun",
@@ -91,8 +96,7 @@
     "v0": "v0",
     "x8": "x8",
     "y9": "y9",
-    "z3": "z3",
-    "confirm": "confirm"
+    "z3": "z3"
   },
   "voice-commands": {
     "hello jarvis": "hello jarvis",

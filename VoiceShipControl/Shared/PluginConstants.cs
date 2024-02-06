@@ -9,6 +9,7 @@ namespace VoiceShipControl
         public static ConfigEntry<bool> IsVoiceActivationButtonNeeded;
         public static ConfigEntry<bool> IsUserCanUseCommandsOutsideTheShip;
         public static ConfigEntry<bool> IsUserCanUseCommandsWhenDead;
+        public static ConfigEntry<bool> IsUserCanUseTeleportAlways;
         public static ConfigEntry<KeyCode> VoiceActivationButton;
         public static ConfigEntry<SupportedLanguages> LanguageCode;
         public static string PathToFolder = VoiceShipControl.Instance.Info.Location.TrimEnd("VoiceShipControl.dll".ToCharArray());
@@ -43,6 +44,8 @@ namespace VoiceShipControl
         public static ConfigEntry<string> ShipIntroAudioAssetName;
         public const string StartGameKey = "start-game";
         public static ConfigEntry<string> StartGame;
+        public const string EndGameKey = "end-game";
+        public static ConfigEntry<string> EndGame;
         public const string CloseDoorKey = "close-door";
         public static ConfigEntry<string> CloseDoor;
         public const string OpenDoorKey = "open-door";
@@ -51,6 +54,14 @@ namespace VoiceShipControl
         public static ConfigEntry<string> SwitchOn;
         public const string SwitchOffKey = "switch-off";
         public static ConfigEntry<string> SwitchOff;
+        public const string TeleporterKey = "teleporter";
+        public static ConfigEntry<string> Teleporter;
+        public const string InverseTeleporterKey = "inverse-teleporter";
+        public static ConfigEntry<string> InverseTeleporter;
+        public const string SwitchMonitorKey = "switch-monitor";
+        public static ConfigEntry<string> SwitchMonitor;
+        public const string ToggleMonitorKey = "toggle-monitor";
+        public static ConfigEntry<string> ToggleMonitor;
         // CONFIGS ENTRY
 
 

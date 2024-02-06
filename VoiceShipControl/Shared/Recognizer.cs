@@ -100,7 +100,7 @@ namespace VoiceShipControl.Helpers
                 Console.WriteLine($"Spocken text: {spokenText}");
                 if (StartOfRound.Instance.localPlayerController.isInHangarShipRoom || PluginConstants.IsUserCanUseCommandsOutsideTheShip.Value)
                 {
-                    if (DetectAndRunStartGameVoiceCommand(spokenText))
+                    if (DetectAndRunStartEndGameVoiceCommand(spokenText))
                     {
                         return;
                     }
@@ -109,6 +109,14 @@ namespace VoiceShipControl.Helpers
                         return;
                     }
                     if (DetectAndRunSwitchVoiceCommand(spokenText))
+                    {
+                        return;
+                    }
+                    if (DetectAndRunTeleporterVoiceCommand(spokenText))
+                    {
+                        return;
+                    }                    
+                    if (DetectAndRunMonitorVoiceCommand(spokenText))
                     {
                         return;
                     }
@@ -135,11 +143,16 @@ namespace VoiceShipControl.Helpers
             }
         }
 
-        public static bool DetectAndRunStartGameVoiceCommand(string spokenText)
+        public static bool DetectAndRunStartEndGameVoiceCommand(string spokenText)
         {
             if (PluginConstants.StartGame.Value.Split('|').Any(y => spokenText.ToLower().Contains(y.ToLower())))
             {
                 StartOfRound.Instance.StartGameServerRpc();
+                return true;
+            }
+            if (PluginConstants.EndGame.Value.Split('|').Any(y => spokenText.ToLower().Contains(y.ToLower())))
+            {
+                StartOfRound.Instance.EndGameServerRpc((int)StartOfRound.Instance.localPlayerController.playerClientId);
                 return true;
             }
             return false;
@@ -176,16 +189,63 @@ namespace VoiceShipControl.Helpers
         public static bool DetectAndRunSwitchVoiceCommand(string spokenText)
         {
 
+            var shipLight = FindObjectOfType<ShipLights>();
             if (PluginConstants.SwitchOn.Value.Split('|').Any(y => spokenText.ToLower().Contains(y.ToLower())))
             {
-                var shipLight = FindObjectOfType<ShipLights>();
                 shipLight.SetShipLightsServerRpc(true);
                 return true;
             }
             if (PluginConstants.SwitchOff.Value.Split('|').Any(y => spokenText.ToLower().Contains(y.ToLower())))
             {
-                var shipLight = FindObjectOfType<ShipLights>();
                 shipLight.SetShipLightsServerRpc(false);
+                return true;
+            }
+            return false;
+        }
+
+        public static bool DetectAndRunMonitorVoiceCommand(string spokenText)
+        {
+            if (PluginConstants.SwitchMonitor.Value.Split('|').Any(y => spokenText.ToLower().Contains(y.ToLower())))
+            {
+                InteractTrigger trigger = GameObject.Find("Environment/HangarShip/ShipModels2b/MonitorWall/Cube.001/CameraMonitorSwitchButton/Cube (2)").GetComponent<InteractTrigger>();
+                if (trigger != null)
+                {
+                    trigger.Interact(GameNetworkManager.Instance.localPlayerController.transform);
+                }
+                return true;
+            }
+            if (PluginConstants.ToggleMonitor.Value.Split('|').Any(y => spokenText.ToLower().Contains(y.ToLower())))
+            {
+                InteractTrigger trigger = GameObject.Find("Environment/HangarShip/ShipModels2b/MonitorWall/Cube.001/CameraMonitorOnButton/Cube (2)").GetComponent<InteractTrigger>();
+                if (trigger != null)
+                {
+                    trigger.Interact(GameNetworkManager.Instance.localPlayerController.transform);
+                }
+                return true;
+            }
+            return false;
+        }
+
+        public static bool DetectAndRunTeleporterVoiceCommand(string spokenText)
+        {
+            var teleporters = FindObjectsOfType<ShipTeleporter>();
+            var teleporter = teleporters.FirstOrDefault(x => !x.isInverseTeleporter);
+            var inverseTeleporter = teleporters.FirstOrDefault(x => x.isInverseTeleporter);
+            if (PluginConstants.Teleporter.Value.Split('|').Any(y => spokenText.ToLower().Contains(y.ToLower())))
+            {
+                if (teleporter.isActiveAndEnabled && (inverseTeleporter.buttonTrigger.interactable || PluginConstants.IsUserCanUseTeleportAlways.Value))
+                {
+                    teleporter.PressTeleportButtonOnLocalClient();
+                }
+                return true;
+            }
+            if (PluginConstants.InverseTeleporter.Value.Split('|').Any(y => spokenText.ToLower().Contains(y.ToLower())))
+            {
+                if (inverseTeleporter.isActiveAndEnabled && (inverseTeleporter.buttonTrigger.interactable || PluginConstants.IsUserCanUseTeleportAlways.Value))
+                {
+                    inverseTeleporter.PressTeleportButtonOnLocalClient();
+                    return true;
+                }
                 return true;
             }
             return false;
