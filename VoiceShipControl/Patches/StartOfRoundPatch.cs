@@ -1,16 +1,9 @@
-﻿using BepInEx;
-using HarmonyLib;
-using System;
-using System.Collections;
-using System.Security.AccessControl;
+﻿using HarmonyLib;
 using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using VoiceShipControl.Helpers;
-using static System.Runtime.CompilerServices.RuntimeHelpers;
 using Debug = UnityEngine.Debug;
 using Object = UnityEngine.Object;
-using Random = System.Random;
 
 namespace VoiceShipControl.Patches
 {

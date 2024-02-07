@@ -7,8 +7,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.LowLevel;
 using VoiceShipControl;
 using VoiceShipControl.Helpers;
 using VoiceShipControl.Shared;
@@ -52,7 +50,7 @@ public class SocketListener : MonoBehaviour
             StartServer();
 
             Debug.Log("SocketListener object created");
-          
+
         }
         mainThreadContext = TaskScheduler.FromCurrentSynchronizationContext();
     }
@@ -83,9 +81,9 @@ public class SocketListener : MonoBehaviour
         {
             KeyCode keyCode = PluginConstants.VoiceActivationButton.Value;
             int mouseKeyCode = KeyBindingHelper.GetMouseButton(keyCode);
-            if (Recognizer.IsProcessStarted && 
-                (((UnityInput.Current.GetKeyDown(keyCode) || UnityInput.Current.GetMouseButtonDown(mouseKeyCode)) && PluginConstants.IsVoiceActivationButtonNeeded.Value) 
-                || (IsWaitingMessage && !PluginConstants.IsVoiceActivationButtonNeeded.Value)))
+            if (Recognizer.IsProcessStarted &&
+               (UnityInput.Current.GetKeyDown(keyCode) || UnityInput.Current.GetMouseButtonDown(mouseKeyCode)) && !IsWaitingMessage)
+                //|| (!IsWaitingMessage && !PluginConstants.IsVoiceActivationButtonNeeded.Value)))
             {
                 Console.WriteLine("Broadcasting started");
                 Instance.StartCoroutine(Broadcasting());

@@ -1,14 +1,10 @@
 ﻿using BepInEx;
-using BepInEx.Configuration;
 using BepInEx.Logging;
 using HarmonyLib;
 using LethalConfig;
-using LethalConfig.ConfigItems;
 using LethalSettings.UI;
 using LethalSettings.UI.Components;
 using System;
-using System.Data;
-using System.IO;
 using System.Linq;
 using UnityEngine;
 using VoiceShipControl.Helpers;
@@ -182,10 +178,10 @@ namespace VoiceShipControl
                  "Voice Command Activation Button",
                  KeyCode.Mouse4,
                  "Voice command activation button");
-            IsVoiceActivationButtonNeeded = Config.Bind("General",
-                "Is voice activation button needed?",
-                true,
-                "If voice activation button needed then x if not empty");
+            //IsVoiceActivationButtonNeeded = Config.Bind("General",
+            //    "Is voice activation button needed?",
+            //    true,
+            //    "If voice activation button needed then x if not empty");
             IsUserCanUseCommandsOutsideTheShip = Config.Bind("General",
                 "Is user can use commands outside the ship?",
                 false,

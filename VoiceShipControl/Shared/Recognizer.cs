@@ -1,16 +1,9 @@
-﻿using BepInEx.Configuration;
-using System;
+﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.Windows;
-using static UnityEngine.GraphicsBuffer;
 using Debug = UnityEngine.Debug;
-using Object = UnityEngine.Object;
-using Random = System.Random;
 
 namespace VoiceShipControl.Helpers
 {
@@ -115,7 +108,7 @@ namespace VoiceShipControl.Helpers
                     if (DetectAndRunTeleporterVoiceCommand(spokenText))
                     {
                         return;
-                    }                    
+                    }
                     if (DetectAndRunMonitorVoiceCommand(spokenText))
                     {
                         return;
@@ -160,7 +153,7 @@ namespace VoiceShipControl.Helpers
 
         public static bool DetectAndRunShipDoorVoiceCommand(string spokenText)
         {
-   
+
             if (PluginConstants.CloseDoor.Value.Split('|').Any(y => spokenText.ToLower().Contains(y.ToLower())))
             {
                 HangarShipDoor door = FindFirstObjectByType<HangarShipDoor>();
@@ -310,7 +303,8 @@ namespace VoiceShipControl.Helpers
                 if (startsWithWhiteSpace)
                 {
                     newText.Remove(0);
-                } else
+                }
+                else
                 {
                     var startIndexOfSpace = newText.IndexOf(" ");
                     newText = spokenText.Substring(startIndexOfSpace);

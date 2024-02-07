@@ -40,7 +40,7 @@ def listen_microphone():
                 print('connection error')
                 break
             except:
-                err = "Error: " + sys.exc_info()[0]
+                err = "Error: " + str(sys.exc_info()[0])
                 conn.sendall(err.encode("utf-8"))
                 conn.shutdown(2) 
                 conn.close()
