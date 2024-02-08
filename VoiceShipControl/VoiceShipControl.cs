@@ -23,7 +23,7 @@ namespace VoiceShipControl
     {
         private const string _modGUID = "Judik.VoiceShipControl";
         private const string _modName = "Voice Ship Control";
-        private const string _modVersion = "1.0.2";
+        private const string _modVersion = "1.0.4";
 
         private readonly Harmony harmony = new Harmony(_modGUID);
 

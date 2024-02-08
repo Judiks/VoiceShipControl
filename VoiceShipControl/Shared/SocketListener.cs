@@ -197,6 +197,14 @@ public class SocketListener : MonoBehaviour
     }
     void OnDestroy()
     {
+        foreach (Delegate d in OnMessageReceivedEvent.GetInvocationList())
+        {
+            OnMessageReceivedEvent -= (MessageReceivedEvent)d;
+        }
+        foreach (Delegate d in OnErrorReceivedEvent.GetInvocationList())
+        {
+            OnErrorReceivedEvent -= (ErrorReceivedEvent)d;
+        }
         Debug.Log("Destriy SocketListener");
         StopSocketListener();
     }
