@@ -1,5 +1,8 @@
-﻿using System.Linq;
+﻿using System.IO;
+using System;
+using System.Linq;
 using UnityEngine;
+using VoiceShipControl.Shared;
 
 namespace VoiceShipControl.Helpers
 {
@@ -22,7 +25,7 @@ namespace VoiceShipControl.Helpers
             var bundle = AssetBundle.GetAllLoadedAssetBundles().FirstOrDefault(x => x.name == assetName);
             if (bundle == null)
             {
-                bundle = AssetBundle.LoadFromFile($"{PluginConstants.PathToFolder}\\Assets\\{assetName}");
+                bundle = AssetBundle.LoadFromFile(FileHelper.GetFilePath(assetName));
             }
             if (bundle != null)
             {
@@ -44,5 +47,6 @@ namespace VoiceShipControl.Helpers
             return new AssetData<T>(result, bundle);
         }
     }
+
 
 }

@@ -23,7 +23,7 @@ namespace VoiceShipControl
     {
         private const string _modGUID = "Judik.VoiceShipControl";
         private const string _modName = "Voice Ship Control";
-        private const string _modVersion = "1.0.0";
+        private const string _modVersion = "1.0.2";
 
         private readonly Harmony harmony = new Harmony(_modGUID);
 
@@ -182,10 +182,10 @@ namespace VoiceShipControl
                  "Voice Command Activation Button",
                  KeyCode.Mouse4,
                  "Voice command activation button");
-            IsVoiceActivationButtonNeeded = Config.Bind("General",
-                "Is voice activation button needed?",
-                true,
-                "If voice activation button needed then x if not empty");
+            //IsVoiceActivationButtonNeeded = Config.Bind("General",
+            //    "Is voice activation button needed?",
+            //    true,
+            //    "If voice activation button needed then x if not empty");
             IsUserCanUseCommandsOutsideTheShip = Config.Bind("General",
                 "Is user can use commands outside the ship?",
                 false,

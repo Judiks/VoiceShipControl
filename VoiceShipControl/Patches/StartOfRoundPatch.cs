@@ -58,7 +58,6 @@ namespace VoiceShipControl.Patches
             {
                 Debug.Log("Recognizer not founded initializing");
                 Recognizer.InitRecognizer();
-
             }
             else
             {
@@ -86,10 +85,11 @@ namespace VoiceShipControl.Patches
         [HarmonyPrefix]
         static void OnDestroy()
         {
-            SocketListener.StopSocketListener();
-            Recognizer.StopRecognizer();
+            Destroy(Recognizer.Instance);
+            Destroy(SocketListener.Instance);
             IsRecognitionEnabled = false;
             Debug.Log("recognizer stopped");
+
         }
     }
 }

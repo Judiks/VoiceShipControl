@@ -1,12 +1,13 @@
 ﻿using BepInEx.Configuration;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 namespace VoiceShipControl
 {
     public static class PluginConstants
     {   // DEFOULT
-        public static ConfigEntry<bool> IsVoiceActivationButtonNeeded;
+        //public static ConfigEntry<bool> IsVoiceActivationButtonNeeded;
         public static ConfigEntry<bool> IsUserCanUseCommandsOutsideTheShip;
         public static ConfigEntry<bool> IsUserCanUseCommandsWhenDead;
         public static ConfigEntry<bool> IsUserCanUseTeleportAlways;
@@ -154,5 +155,6 @@ namespace VoiceShipControl
             { SupportedLanguages.Yoruba, "yo-NG" },
             { SupportedLanguages.Zulu, "zu-ZA" }
         };
+
     }
 }

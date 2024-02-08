@@ -6,8 +6,6 @@
 		<LethalCompanyPath>D:\SteamLibrary\steamapps\common\Lethal Company</LethalCompanyPath>
 		<Platforms>AnyCPU</Platforms>
 	</PropertyGroup>
-
-
 	<ItemGroup>
 		<Reference Include="0Harmony">
 			<HintPath>$(LethalCompanyPath)\BepInEx\core\0Harmony.dll</HintPath>
@@ -57,9 +55,6 @@
 		<Reference Include="UnityEngine.InputModule">
 			<HintPath>$(LethalCompanyPath)\Lethal Company_Data\Managed\UnityEngine.InputModule.dll</HintPath>
 		</Reference>
-	</ItemGroup>
-	<ItemGroup>
-	  <Folder Include="Dependencies\" />
 	</ItemGroup>
 
 </Project>

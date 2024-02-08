@@ -7,6 +7,7 @@ using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Windows;
+using VoiceShipControl.Shared;
 using static UnityEngine.GraphicsBuffer;
 using Debug = UnityEngine.Debug;
 using Object = UnityEngine.Object;
@@ -35,11 +36,8 @@ namespace VoiceShipControl.Helpers
                 {
                     obj.hideFlags = HideFlags.HideAndDontSave;
                 }
-                DontDestroyOnLoad(obj);
                 Instance = obj.AddComponent<Recognizer>();
-
                 Debug.Log("Recognizer object created");
-                Instantiate(Instance.gameObject, new Vector3(1, 1, 0), Quaternion.identity);
             }
         }
 
@@ -59,13 +57,23 @@ namespace VoiceShipControl.Helpers
         // running py recognizer process
         public static IEnumerator Execute()
         {
-            Debug.Log("Recognizer started");
+            var languageCode = PluginConstants.LanguageDictionary.GetValueOrDefault(PluginConstants.LanguageCode.Value);
+            if (!string.IsNullOrEmpty(languageCode))
+            {
+                IsProcessStarted = true;
+            }
+            else
+            {
+                Debug.LogWarning("Recognizer not started Language incorrect!");
+                yield return null;
+            }
             yield return new WaitForSeconds(0f);
             try
             {
+                Debug.Log("Current lang: " + languageCode);
                 recognitionProcess = new Process();
-                recognitionProcess.StartInfo.FileName = $"{PluginConstants.PathToFolder}\\dist\\recognizer\\recognizer.exe";
-                recognitionProcess.StartInfo.Arguments = $"\"{PluginConstants.LanguageCode}\"";
+                recognitionProcess.StartInfo.FileName = FileHelper.GetFilePath("recognizer.exe");
+                recognitionProcess.StartInfo.Arguments = $"\"{languageCode}\"";
                 recognitionProcess.StartInfo.CreateNoWindow = true;
                 recognitionProcess.StartInfo.UseShellExecute = false;
                 recognitionProcess.Exited += (object sender, EventArgs e) =>
@@ -73,7 +81,7 @@ namespace VoiceShipControl.Helpers
                     Debug.LogWarning("Process exited");
                 };
                 recognitionProcess.Start();
-                IsProcessStarted = true;
+                Debug.Log("Recognizer started");
             }
             catch (Exception e)
             {
@@ -85,11 +93,7 @@ namespace VoiceShipControl.Helpers
         // if you want add timeot for microphone listener in py script it's will be helpfull
         public static void PythonError(string error, EventArgs e)
         {
-            Console.WriteLine(error);
-            if (error.Contains("speech_recognition.exceptions.WaitTimeoutError"))
-            {
-                IsStarted = false;
-            }
+            Debug.LogError(error);
         }
 
         // position of 'if' important for stable app work
@@ -337,14 +341,22 @@ namespace VoiceShipControl.Helpers
 
         public static void StopRecognizer()
         {
-            recognitionProcess.Kill();
+            Debug.Log("Stop recognizer");
             IsProcessStarted = IsStarted = false;
+            recognitionProcess.Kill();
 
+        }
+
+        void OnDestroy()
+        {
+            Debug.Log("Destriy recognizer");
+            StopRecognizer();
         }
 
         void OnApplicationQuit()
         {
             StopRecognizer();
+            Destroy(this);
         }
     }
 }

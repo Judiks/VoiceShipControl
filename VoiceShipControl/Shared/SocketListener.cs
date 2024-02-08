@@ -47,11 +47,10 @@ public class SocketListener : MonoBehaviour
                 obj.hideFlags = HideFlags.HideAndDontSave;
             }
 
-            DontDestroyOnLoad(obj);
             Instance = obj.AddComponent<SocketListener>();
+            Debug.Log("SocketListener object created");
             StartServer();
 
-            Debug.Log("SocketListener object created");
           
         }
         mainThreadContext = TaskScheduler.FromCurrentSynchronizationContext();
@@ -84,8 +83,7 @@ public class SocketListener : MonoBehaviour
             KeyCode keyCode = PluginConstants.VoiceActivationButton.Value;
             int mouseKeyCode = KeyBindingHelper.GetMouseButton(keyCode);
             if (Recognizer.IsProcessStarted && 
-                (((UnityInput.Current.GetKeyDown(keyCode) || UnityInput.Current.GetMouseButtonDown(mouseKeyCode)) && PluginConstants.IsVoiceActivationButtonNeeded.Value) 
-                || (IsWaitingMessage && !PluginConstants.IsVoiceActivationButtonNeeded.Value)))
+                (UnityInput.Current.GetKeyDown(keyCode) || UnityInput.Current.GetMouseButtonDown(mouseKeyCode)) && !IsWaitingMessage)
             {
                 Console.WriteLine("Broadcasting started");
                 Instance.StartCoroutine(Broadcasting());
@@ -136,7 +134,7 @@ public class SocketListener : MonoBehaviour
             {
                 if (bytesReceived > 0)
                 {
-                    var data = Encoding.ASCII.GetString(buffer, 0, bytesReceived);
+                    var data = Encoding.UTF8.GetString(buffer, 0, bytesReceived);
                     if (data.Contains("Error"))
                     {
                         Instance.ErrorRecivedEventTrigger(data);
@@ -160,8 +158,8 @@ public class SocketListener : MonoBehaviour
         }
         try
         {
-            byte[] response = Encoding.ASCII.GetBytes(data.ToString());
-            _handler.Send(response);
+            byte[] request = Encoding.ASCII.GetBytes(data.ToString());
+            _handler.Send(request);
         }
         catch (Exception e)
         {
@@ -197,11 +195,16 @@ public class SocketListener : MonoBehaviour
         _socket = _handler = null;
         IsServerStarted = IsWaitingMessage = IsConnectionStarted = false;
     }
+    void OnDestroy()
+    {
+        Debug.Log("Destriy SocketListener");
+        StopSocketListener();
+    }
 
     void OnApplicationQuit()
     {
-        Debug.Log("OnApplicationQuit");
         StopSocketListener();
+        Destroy(this);
     }
 
 }
