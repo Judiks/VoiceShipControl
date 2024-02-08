@@ -2,6 +2,11 @@
 
 Welcome to the Voice Ship Control mod for Lethal Company! This mod allows users to control various ship actions using voice commands, enhancing the gaming experience. Below, you'll find information on how to use and configure the mod.
 
+> [!WARNING]  
+> IMPORTANT THAT THE ALL FILES WILL BE COPIED WITH SUB FOLDERS.
+> r2modman by default extracting all files to single directory. Becouse if this mod or even game can not work!
+> [Check here how to fix](https://github.com/ebkr/r2modmanPlus/wiki/Why-aren't-my-mods-working%3F)
+
 ## Features
 
 ### 1. Voice Commands
@@ -83,11 +88,13 @@ Yeah i know how bad is this video but at least something. Watch on 1.5 speed. Wi
 1. Download the Voice Ship Control mod from current web site or .
 2. Place all files to single folder and call it VoiceShipControl.
 3. Run game.
-4. If LethalConfig not showing this mode in menu try to restart the game ^^
 
-## Note
+> [!NOTE]  
+> If you want make audio assets like in my app you can generate MP3 [here](https://www.101soundboards.com/boards/80040-jarvis-mcu-tts-computer-ai-voice#goog_rewarded) and compile it with unity to asset ♥
 
-If you want make audio assets like in my app you can generate MP3 [here](https://www.101soundboards.com/boards/80040-jarvis-mcu-tts-computer-ai-voice#goog_rewarded) and compile it with unity to asset ♥
+## Min Problems
+
+1. Mod not working with r2modmanPlus [check here](https://github.com/ebkr/r2modmanPlus/wiki/Why-aren't-my-mods-working%3F)
 
 ## Support and Feedback
 
