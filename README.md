@@ -92,7 +92,7 @@ Yeah i know how bad is this video but at least something. Watch on 1.5 speed. Wi
 > [!NOTE]  
 > If you want make audio assets like in my app you can generate MP3 [here](https://www.101soundboards.com/boards/80040-jarvis-mcu-tts-computer-ai-voice#goog_rewarded) and compile it with unity to asset ♥
 
-## Min Problems
+## Main Problems
 
 1. Mod not working with r2modmanPlus [check here](https://github.com/ebkr/r2modmanPlus/wiki/Why-aren't-my-mods-working%3F)
 
