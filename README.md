@@ -5,7 +5,7 @@ Welcome to the Voice Ship Control mod for Lethal Company! This mod allows users 
 ## WARNING  
 IMPORTANT THAT THE ALL FILES WILL BE COPIED WITH SUB FOLDERS.
 
-r2modman by default extracting all files to single directory. Because of it mod or even game can not work! (maybe fixed on 1.0.2 version) 
+r2modman by default extracting all files to single directory. Because of it mod or even game can not work! (maybe fixed on 1.0.3 version) 
 
 [Check here how to fix](https://github.com/ebkr/r2modmanPlus/wiki/Why-aren't-my-mods-working%3F)
 
