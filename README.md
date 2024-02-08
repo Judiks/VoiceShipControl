@@ -2,10 +2,12 @@
 
 Welcome to the Voice Ship Control mod for Lethal Company! This mod allows users to control various ship actions using voice commands, enhancing the gaming experience. Below, you'll find information on how to use and configure the mod.
 
-> [!WARNING]  
-> IMPORTANT THAT THE ALL FILES WILL BE COPIED WITH SUB FOLDERS.
-> r2modman by default extracting all files to single directory. Because of this mod or even game can not work!
-> [Check here how to fix](https://github.com/ebkr/r2modmanPlus/wiki/Why-aren't-my-mods-working%3F)
+## WARNING  
+IMPORTANT THAT THE ALL FILES WILL BE COPIED WITH SUB FOLDERS.
+
+r2modman by default extracting all files to single directory. Because of it mod or even game can not work! (maybe fixed on 1.0.2 version) 
+
+[Check here how to fix](https://github.com/ebkr/r2modmanPlus/wiki/Why-aren't-my-mods-working%3F)
 
 ## Features
 
@@ -28,7 +30,7 @@ Users can perform the following actions using voice commands:
 
 ### 2. Configuration
 
-#### LethalConfig Menu
+#### 2.1 LethalConfig Menu
 
 - Users can configure each phrase through the LethalConfig menu.
 - Multiple phrases can be associated with a single command you need just split them with '|' this strange symbol.
@@ -36,7 +38,7 @@ Users can perform the following actions using voice commands:
   
 ![Show image](https://i.ibb.co/xgcp9SV/Lethal-Config-Menu.png)
 
-#### LethalSetting
+#### 2.2 LethalSettings Menu
 
 - New phrases can be added and configured using LethalSetting.
   
@@ -58,6 +60,7 @@ In future updates, i plan to introduce additional voice commands, including:
 - Televisor control
 - Insta murder of a player if you can tell his nickname? xD
 - Add an adequate selection of keys responsible for commands.
+- UI interface that will be effect that you are in IronMan helmet. It's will show phrases what you said and some responses of commands. For example 'scan' command will display data from terminal. I will add option to disable it.
 - And others... (IDK) You can send me ideas to my [discord account](https://discordapp.com/users/_judik_)
 
 ## Usage
@@ -72,7 +75,7 @@ In future updates, i plan to introduce additional voice commands, including:
 
 3. **Language Configuration:**
    - Change the language of the recognizer through settings.
-   - Reconnect for the changes to take effect.
+   - Reconnect for the changes to take effect. You can not quit the game jest exit to main menu!
 
 4. **Input Binding:**
    - Bind the recognizer to a keyboard or mouse button for quick access.
@@ -89,8 +92,9 @@ Yeah i know how bad is this video but at least something. Watch on 1.5 speed. Wi
 2. Place all files to single folder and call it VoiceShipControl.
 3. Run game.
 
-> [!NOTE]  
-> If you want make audio assets like in my app you can generate MP3 [here](https://www.101soundboards.com/boards/80040-jarvis-mcu-tts-computer-ai-voice#goog_rewarded) and compile it with unity to asset ♥
+## Note  
+
+If you want make audio assets like in my app you can generate MP3 [here](https://www.101soundboards.com/boards/80040-jarvis-mcu-tts-computer-ai-voice#goog_rewarded) and compile it with unity to asset ♥
 
 ## Main Problems
 
