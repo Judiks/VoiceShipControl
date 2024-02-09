@@ -73,11 +73,9 @@ In future updates, i plan to introduce additional voice commands, including:
 4. **Input Binding:**
    - Bind the recognizer to a keyboard or mouse button for quick access.
 
-## Little video about mod
+## Video guid for mod
 
-Yeah i know how bad is this video but at least something. Watch on 1.5 speed. Will make new one later
-
-[![Watch the video](https://i.ibb.co/Vxzh0BZ/image.png)](https://www.youtube.com/watch?v=QqmwDZ3J-TI&ab_channel=Judik)
+[![Watch the video](https://i.ibb.co/LkTQ8MB/image-1.png)](https://youtu.be/PjKQmzKbmpc)
 
 ## Installation
 
